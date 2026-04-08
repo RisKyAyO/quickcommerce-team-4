@@ -1,4 +1,4 @@
-# QuickCommerce - Team Alpha-Beta
+# QuickCommerce - Team Alpha-Beta-Gamma
 Scéance 7
 
 ## Équipe
