@@ -1,0 +1,85 @@
+name: Team CI Pipeline
+
+on:
+  push:
+    branches: [ main, 'feature/**', 'test/**', 'ci/**' ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test-all-services:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies - Catalogue
+        run: |
+          cd catalogue-service
+          npm install
+
+      - name: Install dependencies - Panier
+        run: |
+          cd panier-service
+          npm install
+
+      - name: Install dependencies - Commandes
+        run: |
+          cd commandes-service
+          npm install
+
+      - name: Start Catalogue Service
+        run: |
+          cd catalogue-service
+          node src/index.js &
+          sleep 3
+          curl -s http://localhost:3001/health || exit 1
+          echo "✅ Catalogue service started"
+
+      - name: Start Panier Service
+        run: |
+          cd panier-service
+          node src/index.js &
+          sleep 3
+          curl -s http://localhost:3002/health || exit 1
+          echo "✅ Panier service started"
+
+      - name: Start Commandes Service
+        run: |
+          cd commandes-service
+          node src/index.js &
+          sleep 3
+          curl -s http://localhost:3003/health || exit 1
+          echo "✅ Commandes service started"
+
+      - name: Test Catalogue Service
+        run: |
+          cd catalogue-service
+          npm test
+          echo "✅ Catalogue tests passed"
+
+      - name: Test Panier Service
+        run: |
+          cd panier-service
+          npm test
+          echo "✅ Panier tests passed"
+
+      - name: Test Commandes Service
+        run: |
+          cd commandes-service
+          npm test
+          echo "✅ Commandes tests passed"
+
+      - name: All services healthy check
+        run: |
+          echo "=== Final Health Check ==="
+          curl -s http://localhost:3001/health
+          curl -s http://localhost:3002/health
+          curl -s http://localhost:3003/health
+          echo ""
+          echo "🎉 All services OK!"
