@@ -21,3 +21,12 @@ app.listen(PORT, () => {
 });
 
 module.exports = app;
+
+app.get('/version', (req, res) => {
+  res.json({
+    service: 'catalogue',
+    version: '1.0.1',
+    team: 'QuickCommerce Team Evan-Othmane-Youssef-Yahia',
+    date: new Date().toISOString()
+  });
+});
