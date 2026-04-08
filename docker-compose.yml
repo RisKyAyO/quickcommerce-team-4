@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  catalogue:
+    build: ./catalogue-service
+    ports:
+      - "3001:3001"
+    environment:
+      - PORT=3001
+
+  panier:
+    build: ./panier-service
+    ports:
+      - "3002:3002"
+    environment:
+      - PORT=3002
+
+  commandes:
+    build: ./commandes-service
+    ports:
+      - "3003:3003"
+    environment:
+      - PORT=3003
