@@ -1,2 +1,2 @@
-# quickcommerce-team-4
+# QuickCommerce - Version Alpha
 Scéance 7
